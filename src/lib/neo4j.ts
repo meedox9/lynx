@@ -59,6 +59,35 @@ function observedBackupSwitch(observations: Observation[]) {
   return connection?.object ?? "SW-1";
 }
 
+function commissioningPlanFromObservations(
+  observations: Observation[],
+): CommissioningPlan {
+  const confidenceFor = (...relations: Observation["relation"][]) => {
+    const matches = observations.filter((observation) =>
+      relations.includes(observation.relation),
+    );
+    if (matches.length === 0) return 0;
+    return Math.min(...matches.map((observation) => observation.confidence));
+  };
+
+  return {
+    ...DEMO_COMMISSIONING,
+    changes: DEMO_COMMISSIONING.changes.map((change, index) => ({
+      ...change,
+      confidence:
+        index === 0
+          ? confidenceFor("INSTALLED_AT", "SERIAL")
+          : index === 1
+            ? confidenceFor("CONNECTED_TO")
+            : index === 2
+              ? confidenceFor("LINKED_TO")
+              : index === 3
+                ? confidenceFor("CONFIGURED_AS")
+                : confidenceFor("STATUS"),
+    })),
+  };
+}
+
 export async function detectTopologyRisk(
   observations: Observation[],
 ): Promise<TopologyRisk> {
@@ -191,12 +220,13 @@ export async function detectTopologyRisk(
 export async function stageCommissioningPlan(
   observations: Observation[],
 ): Promise<CommissioningPlan> {
+  const plan = commissioningPlanFromObservations(observations);
   const uri = process.env.NEO4J_URI;
   const username = process.env.NEO4J_USERNAME;
   const password = process.env.NEO4J_PASSWORD;
 
   if (!uri || !username || !password) {
-    return DEMO_COMMISSIONING;
+    return plan;
   }
 
   const database = process.env.NEO4J_DATABASE ?? "neo4j";
@@ -285,13 +315,13 @@ export async function stageCommissioningPlan(
       `,
       {
         demoId: "tower-kilo-commissioning",
-        changeSetId: DEMO_COMMISSIONING.changeSetId,
+        changeSetId: plan.changeSetId,
         observations,
       },
       { database },
     );
 
-    return DEMO_COMMISSIONING;
+    return plan;
   } finally {
     await driver.close();
   }
