@@ -808,6 +808,16 @@
   font-size: 8px;
 }
 
+.snapshotMeta i {
+  padding: 3px 4px;
+  border-radius: 5px;
+  color: var(--mint);
+  background: var(--mint-soft);
+  font-family: var(--font-geist-mono);
+  font-size: 7px;
+  font-style: normal;
+}
+
 .observation > span:last-child {
   display: flex;
   min-width: 0;
@@ -996,7 +1006,7 @@
   min-height: 38px;
   align-items: center;
   border-bottom: 1px solid var(--line);
-  grid-template-columns: 60px minmax(90px, 0.7fr) minmax(120px, 1.3fr);
+  grid-template-columns: 60px minmax(90px, 0.7fr) minmax(120px, 1.3fr) 34px;
   gap: 9px;
 }
 
@@ -1012,7 +1022,8 @@
 }
 
 .changeRow strong,
-.changeRow small {
+.changeRow small,
+.changeRow em {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -1027,6 +1038,14 @@
 .changeRow small {
   color: var(--text-faint);
   font-size: 8px;
+}
+
+.changeRow em {
+  color: var(--mint);
+  font-family: var(--font-geist-mono);
+  font-size: 8px;
+  font-style: normal;
+  text-align: right;
 }
 
 .approvalPanel {
@@ -1393,7 +1412,7 @@
   }
 
   .changeRow {
-    grid-template-columns: 56px minmax(80px, 0.8fr) minmax(100px, 1.2fr);
+    grid-template-columns: 56px minmax(80px, 0.8fr) minmax(100px, 1.2fr) 32px;
   }
 
   .finding > div + div {

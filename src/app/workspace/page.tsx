@@ -545,7 +545,7 @@ export default function Home() {
 
               <div className={styles.observationList}>
                 <span className={styles.sectionLabel}>
-                  FIELD-CHANGE SNAPSHOTS
+                  FIELD EVENTS · CRUSOE CONFIDENCE
                 </span>
                 {(mode === "commission"
                   ? result?.observations
@@ -557,6 +557,9 @@ export default function Home() {
                   >
                     <span className={styles.snapshotMeta}>
                       <time>{snapshotTimes[mode][index] ?? "LIVE"}</time>
+                      <i title="Crusoe extraction confidence">
+                        {Math.round(observation.confidence * 100)}%
+                      </i>
                     </span>
                     <span>
                       <strong>
@@ -649,6 +652,9 @@ export default function Home() {
                 <span>{change.action}</span>
                 <strong>{change.target}</strong>
                 <small>{change.value}</small>
+                <em title="Crusoe extraction confidence">
+                  {Math.round(change.confidence * 100)}%
+                </em>
               </div>
             ))}
           </div>
