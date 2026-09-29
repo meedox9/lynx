@@ -94,9 +94,6 @@ function delay(milliseconds: number) {
   return new Promise((resolve) => setTimeout(resolve, milliseconds));
 }
 
-const localDemoAudio =
-  process.env.NEXT_PUBLIC_LOCAL_DEMO_AUDIO === "true";
-
 export default function Home() {
   const [mode, setMode] = useState<WorkflowMode>("reconcile");
   const [stage, setStage] = useState<Stage>("idle");
@@ -394,16 +391,14 @@ export default function Home() {
           {!revealed ? (
             <>
               <div className={styles.audioCard}>
-                {localDemoAudio && (
-                  <button
-                    type="button"
-                    className={styles.playButton}
-                    onClick={toggleSampleAudio}
-                    aria-label="Play sample recording"
-                  >
-                    <span />
-                  </button>
-                )}
+                <button
+                  type="button"
+                  className={styles.playButton}
+                  onClick={toggleSampleAudio}
+                  aria-label="Play sample recording"
+                >
+                  <span />
+                </button>
                 <span className={styles.recordingStatus}>
                   <i />
                   <span>
@@ -420,17 +415,15 @@ export default function Home() {
                     ),
                   )}
                 </div>
-                {localDemoAudio && (
-                  <audio
-                    ref={audioRef}
-                    src={
-                      mode === "commission"
-                        ? "/commission-note.wav"
-                        : "/field-note.wav"
-                    }
-                    preload="metadata"
-                  />
-                )}
+                <audio
+                  ref={audioRef}
+                  src={
+                    mode === "commission"
+                      ? "/commission-note.wav"
+                      : "/field-note.wav"
+                  }
+                  preload="metadata"
+                />
               </div>
 
               <label
