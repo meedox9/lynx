@@ -1,0 +1,448 @@
+.frame {
+  position: relative;
+  overflow: hidden;
+  min-height: 100%;
+  border: 1px solid var(--line);
+  border-radius: 26px;
+  background: color-mix(in srgb, var(--panel) 88%, transparent);
+  box-shadow: var(--shadow-card);
+  backdrop-filter: blur(30px) saturate(165%);
+  -webkit-backdrop-filter: blur(30px) saturate(165%);
+}
+
+.graphHeader,
+.graphFooter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 22px 24px;
+}
+
+.graphHeader {
+  border-bottom: 1px solid var(--line);
+}
+
+.graphHeader h2 {
+  margin-top: 4px;
+  color: var(--text-strong);
+  font-size: 17px;
+  font-weight: 620;
+  letter-spacing: -0.02em;
+}
+
+.eyebrow {
+  color: var(--text-faint);
+  font-family: var(--font-geist-mono);
+  font-size: 10px;
+  font-weight: 650;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+}
+
+.legend {
+  display: flex;
+  gap: 16px;
+  color: var(--text-muted);
+  font-size: 11px;
+}
+
+.legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.legend i {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+}
+
+.primaryDot {
+  background: var(--mint);
+}
+
+.backupDot {
+  background: var(--cyan);
+}
+
+.canvas {
+  position: relative;
+  min-height: 390px;
+  background: color-mix(in srgb, var(--canvas) 84%, transparent);
+}
+
+.canvas::before {
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: 80px;
+  background: linear-gradient(180deg, var(--canvas), transparent);
+  content: "";
+  pointer-events: none;
+}
+
+.canvas svg {
+  position: relative;
+  z-index: 2;
+  display: block;
+  width: 100%;
+  min-width: 610px;
+}
+
+.grid {
+  opacity: 0.28;
+}
+
+.grid line {
+  stroke: var(--line-soft);
+  stroke-width: 1;
+}
+
+.primaryPath path,
+.documentedBackup path,
+.observedBackup path {
+  fill: none;
+  stroke-linecap: round;
+  stroke-width: 3;
+}
+
+.primaryPath path {
+  marker-end: url("#arrow-primary");
+  stroke: var(--mint);
+}
+
+.documentedBackup path {
+  marker-end: url("#arrow-backup");
+  stroke: var(--cyan);
+  transition:
+    opacity 500ms ease,
+    stroke-dasharray 500ms ease;
+}
+
+.observedBackup {
+  opacity: 0;
+  transition: opacity 600ms ease 180ms;
+}
+
+.observedBackup path {
+  marker-end: url("#arrow-risk");
+  stroke: var(--risk);
+  stroke-width: 3.5;
+}
+
+.existingCommissionEdges path,
+.proposedCommissionEdges path {
+  fill: none;
+  stroke-linecap: round;
+  stroke-width: 3;
+}
+
+.existingCommissionEdges path {
+  stroke: var(--mint);
+}
+
+.proposedCommissionEdges {
+  opacity: 0.12;
+  transition: opacity 500ms ease 120ms;
+}
+
+.proposedCommissionEdges path {
+  stroke: var(--cyan);
+  stroke-dasharray: 6 7;
+}
+
+.revealed .proposedCommissionEdges {
+  opacity: 1;
+}
+
+.commissionApproved .proposedCommissionEdges path {
+  stroke: var(--mint);
+  stroke-dasharray: 0;
+}
+
+.revealed .documentedBackup {
+  opacity: 0.17;
+  stroke-dasharray: 5 8;
+}
+
+.revealed .observedBackup {
+  opacity: 1;
+}
+
+.analyzing .primaryPath,
+.analyzing .documentedBackup {
+  animation: pathScan 1.3s ease-in-out infinite alternate;
+}
+
+.primaryArrow {
+  fill: var(--mint);
+}
+
+.backupArrow {
+  fill: var(--cyan);
+}
+
+.riskArrow {
+  fill: var(--risk);
+}
+
+.node rect {
+  fill: var(--node);
+  stroke: var(--line-bright);
+  stroke-width: 1.5;
+  filter: drop-shadow(0 7px 12px color-mix(in srgb, var(--text-strong) 7%, transparent));
+  transition:
+    fill 350ms ease,
+    stroke 350ms ease,
+    opacity 350ms ease;
+}
+
+.nodeTitle {
+  fill: var(--text-strong);
+  font-family: var(--font-geist-mono);
+  font-size: 11px;
+  font-weight: 650;
+  letter-spacing: 0.03em;
+}
+
+.nodeSubtitle {
+  fill: var(--text-faint);
+  font-family: var(--font-geist-sans);
+  font-size: 9px;
+}
+
+.nodeIndicator {
+  fill: var(--text-faint);
+}
+
+.site .nodeIndicator {
+  fill: var(--violet);
+}
+
+.switch .nodeIndicator {
+  fill: var(--cyan);
+}
+
+.radio .nodeIndicator {
+  fill: var(--mint);
+}
+
+.core .nodeIndicator {
+  fill: var(--amber);
+}
+
+.shared rect {
+  fill: var(--risk-soft);
+  stroke: var(--risk);
+}
+
+.shared .nodeIndicator {
+  fill: var(--risk);
+}
+
+.offline {
+  opacity: 0.44;
+}
+
+.offline rect {
+  stroke-dasharray: 4 4;
+}
+
+.offline .nodeIndicator {
+  fill: var(--risk);
+}
+
+.commissionNode rect {
+  fill: var(--node);
+  stroke: var(--line-bright);
+  stroke-width: 1.5;
+  filter: drop-shadow(0 7px 12px color-mix(in srgb, var(--text-strong) 7%, transparent));
+  transition:
+    fill 350ms ease,
+    stroke 350ms ease,
+    opacity 350ms ease;
+}
+
+.commissionNode circle {
+  fill: var(--mint);
+}
+
+.proposedNode {
+  opacity: 0.24;
+  transition: opacity 420ms ease 120ms;
+}
+
+.proposedNode rect {
+  stroke: var(--cyan);
+  stroke-dasharray: 5 5;
+}
+
+.revealed .proposedNode {
+  opacity: 1;
+}
+
+.approvedNode rect {
+  fill: var(--mint-soft);
+  stroke: var(--mint);
+  stroke-dasharray: 0;
+}
+
+.approvedNode circle {
+  fill: var(--mint);
+}
+
+.pulse {
+  fill: transparent;
+  stroke: var(--risk);
+  stroke-width: 1.5;
+  transform-origin: center;
+  animation: pulse 1.9s ease-out infinite;
+}
+
+.riskBadge {
+  animation: badgeIn 420ms ease both;
+}
+
+.riskBadge rect {
+  fill: var(--risk);
+}
+
+.riskBadge circle {
+  fill: var(--canvas);
+}
+
+.riskBadge text {
+  fill: var(--risk-on);
+  font-family: var(--font-geist-mono);
+  font-size: 9px;
+  font-weight: 750;
+  letter-spacing: 0.07em;
+}
+
+.changeBadge {
+  animation: changeBadgeIn 420ms ease both;
+}
+
+.changeBadge rect {
+  fill: var(--cyan);
+}
+
+.commissionApproved .changeBadge rect {
+  fill: var(--mint);
+}
+
+.changeBadge circle {
+  fill: var(--canvas);
+}
+
+.changeBadge text {
+  fill: var(--risk-on);
+  font-family: var(--font-geist-mono);
+  font-size: 9px;
+  font-weight: 750;
+  letter-spacing: 0.06em;
+}
+
+.graphFooter {
+  min-height: 62px;
+  border-top: 1px solid var(--line);
+  color: var(--text-faint);
+  font-size: 11px;
+}
+
+.sourceLabel {
+  font-family: var(--font-geist-mono);
+}
+
+.healthyState,
+.riskState,
+.proposedState {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 570;
+}
+
+.healthyState {
+  color: var(--mint);
+}
+
+.riskState {
+  color: var(--risk);
+}
+
+.proposedState {
+  color: var(--cyan);
+}
+
+.healthyState i,
+.riskState i,
+.proposedState i {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 0.8;
+    transform: scale(0.72);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.3);
+  }
+}
+
+@keyframes badgeIn {
+  from {
+    opacity: 0;
+    transform: translate(250px, 144px);
+  }
+  to {
+    opacity: 1;
+    transform: translate(250px, 154px);
+  }
+}
+
+@keyframes changeBadgeIn {
+  from {
+    opacity: 0;
+    transform: translate(400px, 242px);
+  }
+  to {
+    opacity: 1;
+    transform: translate(400px, 252px);
+  }
+}
+
+@keyframes pathScan {
+  from {
+    opacity: 0.38;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@media (max-width: 760px) {
+  .canvas {
+    overflow-x: auto;
+  }
+
+  .graphHeader,
+  .graphFooter {
+    padding-right: 18px;
+    padding-left: 18px;
+  }
+
+  .sourceLabel {
+    display: none;
+  }
+}
+

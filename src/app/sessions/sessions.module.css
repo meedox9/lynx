@@ -1,0 +1,162 @@
+.sessionList {
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 22px;
+  background: color-mix(in srgb, var(--panel) 88%, transparent);
+  box-shadow: var(--shadow-card);
+  backdrop-filter: blur(28px) saturate(160%);
+}
+
+.session {
+  display: grid;
+  min-height: 108px;
+  align-items: center;
+  padding: 0 22px;
+  grid-template-columns: 68px minmax(240px, 1.2fr) minmax(300px, 1fr) 130px 32px;
+  gap: 18px;
+  transition: background 160ms ease;
+}
+
+.session + .session {
+  border-top: 1px solid var(--line);
+}
+
+.session:hover {
+  background: var(--line-soft);
+}
+
+.sessionIcon {
+  display: flex;
+  width: 48px;
+  height: 48px;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--canvas);
+}
+
+.sessionIcon i {
+  width: 3px;
+  border-radius: 10px;
+  background: var(--mint);
+}
+
+.sessionIcon i:nth-child(1),
+.sessionIcon i:nth-child(5) {
+  height: 12px;
+  opacity: 0.44;
+}
+
+.sessionIcon i:nth-child(2),
+.sessionIcon i:nth-child(4) {
+  height: 21px;
+  opacity: 0.7;
+}
+
+.sessionIcon i:nth-child(3) {
+  height: 29px;
+}
+
+.sessionIdentity {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.sessionIdentity > span,
+.sessionIdentity small,
+.session dt {
+  color: var(--text-faint);
+  font-family: var(--font-geist-mono);
+  font-size: 7px;
+  letter-spacing: 0.05em;
+}
+
+.sessionIdentity h2 {
+  color: var(--text-strong);
+  font-size: 13px;
+  font-weight: 630;
+}
+
+.session dl {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+}
+
+.session dl div {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.session dd {
+  color: var(--text-muted);
+  font-size: 10px;
+}
+
+.state {
+  justify-self: start;
+  padding: 6px 8px;
+  border-radius: 8px;
+  font-size: 8px;
+  font-weight: 630;
+}
+
+.approved {
+  color: var(--mint);
+  background: var(--mint-soft);
+}
+
+.critical {
+  color: var(--risk);
+  background: var(--risk-soft);
+}
+
+.scheduled {
+  color: var(--text-faint);
+  background: var(--line-soft);
+}
+
+.session > a:last-child {
+  display: grid;
+  width: 28px;
+  height: 28px;
+  place-items: center;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  color: var(--text-muted);
+  background: var(--panel);
+}
+
+@media (max-width: 900px) {
+  .session {
+    padding: 18px;
+    grid-template-columns: 56px 1fr auto;
+  }
+
+  .session dl {
+    grid-column: 2 / -1;
+  }
+
+  .state {
+    grid-column: 2;
+  }
+}
+
+@media (max-width: 620px) {
+  .session {
+    grid-template-columns: 48px 1fr;
+  }
+
+  .session > a:last-child {
+    display: none;
+  }
+
+  .session dl {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+}
+

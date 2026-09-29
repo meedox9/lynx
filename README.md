@@ -1,36 +1,38 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Lynx
 
-## Getting Started
+Voice-first field intelligence for physical networks.
 
-First, run the development server:
+Lynx converts hands-free technician recordings into evidence-backed infrastructure changes before the technician leaves the site.
+
+## What it does
+
+- **Commission:** Draft inventory, connectivity, and configuration updates from narrated installation work.
+- **Reconcile:** Compare field observations with documented topology and expose hidden operational risk.
+
+Changes are staged in an isolated graph change set. A network operator reviews the original evidence and approves each update before it enters the source of truth.
+
+## Architecture
+
+- **PLAUD** captures and transcribes real-world field recordings.
+- **Crusoe** converts transcripts into canonical, confidence-scored field events.
+- **Neo4j Aura** stages graph changes and reasons across physical dependencies.
+- **Next.js** provides the operator review and approval interface.
+
+## Run locally
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open the local URL printed by Next.js.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Configure integrations in `.env.local`:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- `PLAUD_CLIENT_ID`, `PLAUD_API_KEY`, and optionally `PLAUD_USER_ACCESS_TOKEN`
+- `CRUSOE_API_KEY`
+- `NEO4J_URI`, `NEO4J_USERNAME`, `NEO4J_PASSWORD`, and `NEO4J_DATABASE`
 
-## Learn More
+## Deploy
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Lynx deploys as a standard Next.js application on Vercel. Add the same variables in Vercel Project Settings → Environment Variables. Set `PLAUD_TRANSCRIPTION_ENABLED=false` unless the PLAUD application has a bound-device entitlement.
