@@ -5,6 +5,7 @@ import {
   DragEvent,
   useEffect,
   useMemo,
+  useRef,
   useState,
 } from "react";
 
@@ -93,6 +94,9 @@ function delay(milliseconds: number) {
   return new Promise((resolve) => setTimeout(resolve, milliseconds));
 }
 
+const localDemoAudio =
+  process.env.NEXT_PUBLIC_LOCAL_DEMO_AUDIO === "true";
+
 export default function Home() {
   const [mode, setMode] = useState<WorkflowMode>("reconcile");
   const [stage, setStage] = useState<Stage>("idle");
@@ -108,6 +112,7 @@ export default function Home() {
   const [azimuth, setAzimuth] = useState("");
   const [providerConfiguration, setProviderConfiguration] =
     useState<ProviderConfiguration | null>(null);
+  const audioRef = useRef<HTMLAudioElement>(null);
 
   useEffect(() => {
     void fetch("/api/status")
@@ -266,6 +271,17 @@ export default function Home() {
     }
   }
 
+  function toggleSampleAudio() {
+    const audio = audioRef.current;
+    if (!audio) return;
+    if (audio.paused) {
+      void audio.play();
+    } else {
+      audio.pause();
+      audio.currentTime = 0;
+    }
+  }
+
   return (
     <>
       <ProductNav
@@ -378,6 +394,16 @@ export default function Home() {
           {!revealed ? (
             <>
               <div className={styles.audioCard}>
+                {localDemoAudio && (
+                  <button
+                    type="button"
+                    className={styles.playButton}
+                    onClick={toggleSampleAudio}
+                    aria-label="Play sample recording"
+                  >
+                    <span />
+                  </button>
+                )}
                 <span className={styles.recordingStatus}>
                   <i />
                   <span>
@@ -394,6 +420,17 @@ export default function Home() {
                     ),
                   )}
                 </div>
+                {localDemoAudio && (
+                  <audio
+                    ref={audioRef}
+                    src={
+                      mode === "commission"
+                        ? "/commission-note.wav"
+                        : "/field-note.wav"
+                    }
+                    preload="metadata"
+                  />
+                )}
               </div>
 
               <label
